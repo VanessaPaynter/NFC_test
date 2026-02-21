@@ -4,89 +4,233 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Daily Hype ✨</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@500&family=Pacifico&family=Oswald:wght@600&display=swap" rel="stylesheet">
 
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: black;
-      color: white;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
+body {
+  margin: 0;
+  background: radial-gradient(circle at 20% 20%, #1a1a2e, #000);
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
 
-    img {
-      max-width: 80%;
-      max-height: 50vh;
-      border-radius: 20px;
-      margin-bottom: 20px;
-    }
+/* Sparkle background */
+.sparkles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: radial-gradient(white 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: sparkleMove 20s linear infinite;
+  opacity: 0.25;
+}
 
-    .message {
-      font-size: 2rem;
-      animation: flash 1s infinite;
-    }
+@keyframes sparkleMove {
+  from { background-position: 0 0; }
+  to { background-position: 1000px 1000px; }
+}
 
-    @keyframes flash {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
-    }
+/* Image wrapper */
+.imageWrapper {
+  position: relative;
+  display: inline-block;
+}
 
-    iframe {
-      margin-top: 20px;
-    }
-  </style>
+.imageWrapper img {
+  max-width: 80vw;
+  max-height: 60vh;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  animation: subtleZoom 10s infinite alternate ease-in-out;
+}
+
+.imageWrapper img.loaded {
+  opacity: 1;
+}
+
+/* Overlay message */
+.message {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.8rem;
+  font-weight: bold;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  padding: 10px 20px;
+  border-radius: 15px;
+  animation: flash 1.5s infinite;
+  transition: opacity 0.4s ease;
+}
+
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes subtleZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+/* Refresh button */
+#refreshBtn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  cursor: pointer;
+}
+</style>
 </head>
 
 <body>
 
+  <div class="sparkles"></div>
+
+<div class="imageWrapper">
   <img id="randomImage" src="" />
   <div class="message" id="randomMessage"></div>
-  <div id="musicContainer"></div>
+</div>
+
+<div id="musicContainer" style="margin-top:20px;"></div>
+
+<button id="refreshBtn">✨</button>
 
   <script>
     // ===== CONTENT =====
 
     const images = [
-      "images/pic1.jpeg",
-      "images/pic2.jpeg",
-      "images/pic3.jpeg"
-    ];
+  "images/pic1.jpeg",
+  "images/pic2.jpeg",
+  "images/pic3.jpeg"
+];
 
-    const messages = [
-      "YOU ARE UNSTOPPABLE 💥",
-      "TODAY IS YOUR DAY 🔥",
-      "GO OWN THE WORLD 🌍",
-      "ABSOLUTE ICON ENERGY ✨"
-    ];
+const messages = [
+  "You ARE UNSTOPPABLE 💥",
+  "TODAY IS YOUR DAY 🔥",
+  "GO OWN THE WORLD 🌍",
+  "ABSOLUTE ICON ENERGY ✨"
+];
 
-    const tracks = [
-      "https://open.spotify.com/embed/track/11dFghVXANMlKmJXsNCbNl",
-      "https://open.spotify.com/embed/track/3n3Ppam7vgaVa1iaRUc9Lp",
-      "https://open.spotify.com/embed/track/7qiZfU4dY1lWllzX7mPBI3"
-    ];
+const tracks = [
+  "https://open.spotify.com/embed/track/XXXXXXXX?utm_source=generator&autoplay=1",
+  "https://open.spotify.com/embed/track/YYYYYYYY?utm_source=generator&autoplay=1",
+  "https://open.spotify.com/embed/track/ZZZZZZZZ?utm_source=generator&autoplay=1"
+];
 
-    // ===== RANDOMIZER =====
+let lastImage = null;
+let lastMessage = null;
+let lastTrack = null;
+let lastStyle = null;
 
-    function randomItem(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
+const textStyles = [
+  {
+    font: "'Playfair Display', serif",
+    italic: true,
+    glow: true,
+    size: "2rem"
+  },
+  {
+    font: "'Montserrat', sans-serif",
+    italic: false,
+    glow: false,
+    size: "1.8rem"
+  },
+  {
+    font: "'Pacifico', cursive",
+    italic: false,
+    glow: true,
+    size: "2.2rem"
+  },
+  {
+    font: "'Oswald', sans-serif",
+    italic: false,
+    glow: true,
+    size: "2rem"
+  }
+];
 
-    document.getElementById("randomImage").src = randomItem(images);
-    document.getElementById("randomMessage").textContent = randomItem(messages);
+function getNonRepeating(arr, lastItem) {
+  let newItem;
+  do {
+    newItem = arr[Math.floor(Math.random() * arr.length)];
+  } while (newItem === lastItem && arr.length > 1);
+  return newItem;
+}
 
-    const track = randomItem(tracks);
+function generateHype() {
 
-    document.getElementById("musicContainer").innerHTML = `
-      <iframe src="${track}" width="300" height="80"
-      frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
-      </iframe>
-    `;
+  const img = getNonRepeating(images, lastImage);
+  lastImage = img;
+
+  const imgElement = document.getElementById("randomImage");
+  imgElement.classList.remove("loaded");
+  imgElement.src = img + "?t=" + new Date().getTime();
+  imgElement.onload = () => imgElement.classList.add("loaded");
+
+  const msg = getNonRepeating(messages, lastMessage);
+  lastMessage = msg;
+  document.getElementById("randomMessage").textContent = msg;
+
+  let style;
+do {
+  style = textStyles[Math.floor(Math.random() * textStyles.length)];
+} while (style === lastStyle && textStyles.length > 1);
+
+lastStyle = style;
+  
+  const msgElement = document.getElementById("randomMessage");
+
+msgElement.style.opacity = 0;
+
+setTimeout(() => {
+  msgElement.textContent = msg;
+  msgElement.style.opacity = 1;
+}, 200);
+
+  msgElement.style.fontFamily = style.font;
+  msgElement.style.fontStyle = style.italic ? "italic" : "normal";
+  msgElement.style.fontSize = style.size;
+
+  if (style.glow) {
+    msgElement.style.textShadow = "0 0 10px rgba(255,255,255,0.8)";
+  } else {
+    msgElement.style.textShadow = "none";
+  }
+
+  const track = getNonRepeating(tracks, lastTrack);
+  lastTrack = track;
+
+  document.getElementById("musicContainer").innerHTML = `
+    <iframe src="${track}" width="300" height="80"
+    frameborder="0"
+    allow="autoplay; encrypted-media">
+    </iframe>
+  `;
+}
+
+    
+generateHype();
+
+document.getElementById("refreshBtn")
+  .addEventListener("click", generateHype);
+
   </script>
 
 </body>
