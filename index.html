@@ -55,6 +55,7 @@
     }
 
     .message {
+  color: white;
   font-weight: bold;
   font-size: 1.8rem;
   text-align: center;
@@ -66,6 +67,7 @@
   max-width: 90vw; /* restrict width on small screens */
   margin-bottom: 10px; /* space between text and image */
   transition: opacity 0.4s ease;
+  text-shadow: 0 0 10px rgba(255,255,255,0.8); /* soft glow for readability */
 }
 
     /* ===== Image Wrapper ===== */
@@ -79,7 +81,7 @@
       max-height: 60vh;
       border-radius: 20px;
       opacity: 0;
-      transition: opacity 0.8s ease;
+      transition: opacity 0.5s ease;
       animation: subtleZoom 10s infinite alternate ease-in-out;
       display: block;
       margin: 0 auto;
@@ -192,13 +194,14 @@
 
     // Twinkling sparkles
 const sparkleContainer = document.getElementById("sparkleContainer");
-const NUM_SPARKLES = 50; // adjust for more/less
+const NUM_SPARKLES = 70; // adjust for more/less
 
 for (let i = 0; i < NUM_SPARKLES; i++) {
   const sparkle = document.createElement("div");
   sparkle.classList.add("sparkle");
   sparkle.style.top = Math.random() * 100 + "%";
   sparkle.style.left = Math.random() * 100 + "%";
+  sparkle.style.width = sparkle.style.height = (Math.random() * 2 + 1) + "px";
   sparkle.style.animationDuration = (Math.random() * 1 + 1) + "s"; // 1-2s random
   sparkle.style.animationDelay = Math.random() * 3 + "s"; // random start
   sparkleContainer.appendChild(sparkle);
