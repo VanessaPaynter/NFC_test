@@ -81,7 +81,7 @@
       max-height: 60vh;
       border-radius: 20px;
       opacity: 0;
-      transition: opacity 0.10s ease;
+      transition: opacity 1s ease;
       animation: subtleZoom 10s infinite alternate ease-in-out;
       display: block;
       margin: 0 auto;
@@ -199,7 +199,7 @@ imgElement.onload = () => imgElement.classList.add("loaded");
 
     // Twinkling sparkles
 const sparkleContainer = document.getElementById("sparkleContainer");
-const NUM_SPARKLES = 70; // adjust for more/less
+const NUM_SPARKLES = 85; // adjust for more/less
 
 for (let i = 0; i < NUM_SPARKLES; i++) {
   const sparkle = document.createElement("div");
@@ -240,6 +240,8 @@ for (let i = 0; i < NUM_SPARKLES; i++) {
         lastStyle = style;
 
         msgElement.style.fontFamily = style.font;
+        msgElement.style.color = "white"; // ensure text is white
+        msgElement.style.textShadow = style.glow ? "0 0 10px rgba(255, 255, 150, 0.9)" : "none"; // yellowish glow
         msgElement.style.fontStyle = style.italic ? "italic" : "normal";
         msgElement.style.fontSize = style.size;
         msgElement.style.textShadow = style.glow ? "0 0 10px rgba(255,255,255,0.8)" : "none";
