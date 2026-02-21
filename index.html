@@ -10,37 +10,45 @@
 
   <style>
     /* ===== Body & Sparkles ===== */
+    
     body {
-      margin: 0;
-      background: radial-gradient(circle at 20% 20%, #1a1a2e, #000);
-      color: white;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
-      position: relative;
-      font-family: 'Montserrat', sans-serif;
-    }
+  margin: 0;
+  padding-top: 40px; /* pushes content down from top edge */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* align content to top */
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background: radial-gradient(circle at 20% 20%, #1a1a2e, #000);
+}
 
-    .sparkles {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      background-image: radial-gradient(white 1px, transparent 1px);
-      background-size: 40px 40px;
-      animation: sparkleMove 20s linear infinite;
-      opacity: 0.25;
-    }
+    #sparkleContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
 
-    @keyframes sparkleMove {
-      from { background-position: 0 0; }
-      to { background-position: 1000px 1000px; }
-    }
+.sparkle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0;
+  animation: twinkle 1.5s infinite;
+}
 
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
     /* ===== Message ===== */
     #messageContainer {
       margin-bottom: 10px;
@@ -121,7 +129,7 @@
 <body>
 
   <!-- Sparkle Background -->
-  <div class="sparkles"></div>
+  <div id="sparkleContainer"></div>
 
   <!-- Message -->
   <div id="messageContainer">
@@ -181,6 +189,20 @@
       } while (newItem === lastItem && arr.length > 1);
       return newItem;
     }
+
+    // Twinkling sparkles
+const sparkleContainer = document.getElementById("sparkleContainer");
+const NUM_SPARKLES = 50; // adjust for more/less
+
+for (let i = 0; i < NUM_SPARKLES; i++) {
+  const sparkle = document.createElement("div");
+  sparkle.classList.add("sparkle");
+  sparkle.style.top = Math.random() * 100 + "%";
+  sparkle.style.left = Math.random() * 100 + "%";
+  sparkle.style.animationDuration = (Math.random() * 1 + 1) + "s"; // 1-2s random
+  sparkle.style.animationDelay = Math.random() * 3 + "s"; // random start
+  sparkleContainer.appendChild(sparkle);
+}
 
     // ===== MAIN GENERATOR =====
     function generateHype() {
