@@ -47,14 +47,18 @@
     }
 
     .message {
-      font-weight: bold;
-      font-size: 1.8rem;
-      text-align: center;
-      white-space: nowrap; /* single line */
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: opacity 0.4s ease;
-    }
+  font-weight: bold;
+  font-size: 1.8rem;
+  text-align: center;
+  white-space: normal; /* allow wrapping */
+  word-wrap: break-word; /* break long words if needed */
+  overflow-wrap: break-word; /* standard fallback */
+  overflow: hidden;
+  text-overflow: ellipsis; /* optional: cut extremely long lines */
+  max-width: 90vw; /* restrict width on small screens */
+  margin-bottom: 10px; /* space between text and image */
+  transition: opacity 0.4s ease;
+}
 
     /* ===== Image Wrapper ===== */
     .imageWrapper {
