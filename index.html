@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily Hype ✨</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: black;
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    img {
+      max-width: 80%;
+      max-height: 50vh;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .message {
+      font-size: 2rem;
+      animation: flash 1s infinite;
+    }
+
+    @keyframes flash {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    iframe {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <img id="randomImage" src="" />
+  <div class="message" id="randomMessage"></div>
+  <div id="musicContainer"></div>
+
+  <script>
+    // ===== CONTENT =====
+
+    const images = [
+      "images/pic1.jpg",
+      "images/pic2.jpg",
+      "images/pic3.jpg"
+    ];
+
+    const messages = [
+      "YOU ARE UNSTOPPABLE 💥",
+      "TODAY IS YOUR DAY 🔥",
+      "GO OWN THE WORLD 🌍",
+      "ABSOLUTE ICON ENERGY ✨"
+    ];
+
+    const tracks = [
+      "https://open.spotify.com/embed/track/11dFghVXANMlKmJXsNCbNl",
+      "https://open.spotify.com/embed/track/3n3Ppam7vgaVa1iaRUc9Lp",
+      "https://open.spotify.com/embed/track/7qiZfU4dY1lWllzX7mPBI3"
+    ];
+
+    // ===== RANDOMIZER =====
+
+    function randomItem(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    document.getElementById("randomImage").src = randomItem(images);
+    document.getElementById("randomMessage").textContent = randomItem(messages);
+
+    const track = randomItem(tracks);
+
+    document.getElementById("musicContainer").innerHTML = `
+      <iframe src="${track}" width="300" height="80"
+      frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+      </iframe>
+    `;
+  </script>
+
+</body>
+</html>
