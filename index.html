@@ -157,6 +157,11 @@
       "images/pic3.jpeg"
     ];
 
+    const imgElement = document.getElementById("randomImage");
+imgElement.classList.remove("loaded");
+imgElement.src = img + "?t=" + new Date().getTime(); // cache bust
+imgElement.onload = () => imgElement.classList.add("loaded");
+
     const messages = [
       "You ARE UNSTOPPABLE 💥",
       "TODAY IS YOUR DAY 🔥",
