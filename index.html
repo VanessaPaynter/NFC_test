@@ -10,70 +10,71 @@
 
   <style>
     /* ===== Body & Sparkles ===== */
-    
     body {
-  margin: 0;
-  padding-top: 40px; /* pushes content down from top edge */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* align content to top */
-  align-items: center;
-  min-height: 100vh;
-  overflow: hidden;
-  position: relative;
-  background: radial-gradient(circle at 20% 20%, #1a1a2e, #000);
-}
+      margin: 0;
+      padding-top: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+      background: radial-gradient(circle at 20% 20%, #1a1a2e, #000);
+      font-family: sans-serif;
+    }
 
     #sparkleContainer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 0;
-}
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
 
-.sparkle {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: white;
-  border-radius: 50%;
-  opacity: 0;
-  animation: twinkle 1.5s infinite;
-}
+    .sparkle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0;
+      animation: twinkle 1.5s infinite;
+    }
 
-@keyframes twinkle {
-  0%, 100% { opacity: 0; transform: scale(0.5); }
-  50% { opacity: 1; transform: scale(1.5); }
-}
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.5); }
+    }
+
     /* ===== Message ===== */
     #messageContainer {
       margin-bottom: 10px;
+      z-index: 5;
     }
 
     .message {
-  color: white;
-  font-weight: bold;
-  font-size: 1.8rem;
-  text-align: center;
-  white-space: normal; /* allow wrapping */
-  word-wrap: break-word; /* break long words if needed */
-  overflow-wrap: break-word; /* standard fallback */
-  overflow: hidden;
-  text-overflow: ellipsis; /* optional: cut extremely long lines */
-  max-width: 90vw; /* restrict width on small screens */
-  margin-bottom: 10px; /* space between text and image */
-  transition: opacity 0.4s ease;
-  text-shadow: 0 0 10px rgba(255,255,255,0.8); /* soft glow for readability */
-}
+      color: white;
+      font-weight: bold;
+      font-size: 1.8rem;
+      text-align: center;
+      white-space: normal;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      max-width: 90vw;
+      margin-bottom: 10px;
+      transition: opacity 0.4s ease;
+      text-shadow: 0 0 10px rgba(255,255,150,0.9);
+    }
 
     /* ===== Image Wrapper ===== */
     .imageWrapper {
       display: inline-block;
       position: relative;
+      z-index: 2;
     }
 
     .imageWrapper img {
@@ -81,7 +82,8 @@
       max-height: 60vh;
       border-radius: 20px;
       opacity: 0;
-      transition: opacity 1s ease;
+      transform: scale(0.95);
+      transition: opacity 1s ease, transform 1s ease;
       animation: subtleZoom 10s infinite alternate ease-in-out;
       display: block;
       margin: 0 auto;
@@ -89,6 +91,7 @@
 
     .imageWrapper img.loaded {
       opacity: 1;
+      transform: scale(1);
     }
 
     @keyframes subtleZoom {
@@ -115,8 +118,10 @@
     /* ===== Spotify Player ===== */
     #musicContainer {
       margin-top: 20px;
+      margin-bottom: 40px;
       display: flex;
       justify-content: center;
+      z-index: 3;
     }
 
     #musicContainer iframe {
@@ -125,6 +130,14 @@
       height: 80px;
       border-radius: 10px;
     }
+
+    /* ===== Mobile font adjustments ===== */
+    @media screen and (max-width: 400px) {
+      .message {
+        font-size: 1.5rem;
+      }
+    }
+
   </style>
 </head>
 
@@ -157,11 +170,6 @@
       "images/pic3.jpeg"
     ];
 
-    const imgElement = document.getElementById("randomImage");
-imgElement.classList.remove("loaded");
-imgElement.src = img + "?t=" + new Date().getTime(); // cache bust
-imgElement.onload = () => imgElement.classList.add("loaded");
-
     const messages = [
       "You ARE UNSTOPPABLE 💥",
       "TODAY IS YOUR DAY 🔥",
@@ -170,9 +178,9 @@ imgElement.onload = () => imgElement.classList.add("loaded");
     ];
 
     const tracks = [
-      "https://open.spotify.com/embed/track/7GhIk7Il098yCjg4BQjzvb",
-      "https://open.spotify.com/embed/track/3n3Ppam7vgaVa1iaRUc9Lp",
-      "https://open.spotify.com/embed/track/1AhDOtG9vPSOmsWgNW0BEY"
+      "https://open.spotify.com/embed/track/7GhIk7Il098yCjg4BQjzvb?utm_source=generator&autoplay=1",
+      "https://open.spotify.com/embed/track/3n3Ppam7vgaVa1iaRUc9Lp?utm_source=generator&autoplay=1",
+      "https://open.spotify.com/embed/track/1AhDOtG9vPSOmsWgNW0BEY?utm_source=generator&autoplay=1"
     ];
 
     // ===== STATE =====
@@ -197,24 +205,24 @@ imgElement.onload = () => imgElement.classList.add("loaded");
       return newItem;
     }
 
-    // Twinkling sparkles
-const sparkleContainer = document.getElementById("sparkleContainer");
-const NUM_SPARKLES = 85; // adjust for more/less
+    // ===== Twinkling Sparkles =====
+    const sparkleContainer = document.getElementById("sparkleContainer");
+    const NUM_SPARKLES = 85;
 
-for (let i = 0; i < NUM_SPARKLES; i++) {
-  const sparkle = document.createElement("div");
-  sparkle.classList.add("sparkle");
-  sparkle.style.top = Math.random() * 100 + "%";
-  sparkle.style.left = Math.random() * 100 + "%";
-  sparkle.style.width = sparkle.style.height = (Math.random() * 2 + 1) + "px";
-  sparkle.style.animationDuration = (Math.random() * 1 + 1) + "s"; // 1-2s random
-  sparkle.style.animationDelay = Math.random() * 3 + "s"; // random start
-  sparkleContainer.appendChild(sparkle);
-}
+    for (let i = 0; i < NUM_SPARKLES; i++) {
+      const sparkle = document.createElement("div");
+      sparkle.classList.add("sparkle");
+      sparkle.style.top = Math.random() * 100 + "%";
+      sparkle.style.left = Math.random() * 100 + "%";
+      sparkle.style.width = sparkle.style.height = (Math.random() * 2 + 1) + "px";
+      sparkle.style.animationDuration = (Math.random() * 1 + 1) + "s";
+      sparkle.style.animationDelay = Math.random() * 3 + "s";
+      sparkleContainer.appendChild(sparkle);
+    }
 
     // ===== MAIN GENERATOR =====
     function generateHype() {
-      // Image
+      // ===== Image =====
       const img = getNonRepeating(images, lastImage);
       lastImage = img;
       const imgElement = document.getElementById("randomImage");
@@ -222,13 +230,12 @@ for (let i = 0; i < NUM_SPARKLES; i++) {
       imgElement.src = img + "?t=" + new Date().getTime();
       imgElement.onload = () => imgElement.classList.add("loaded");
 
-      // Message
+      // ===== Message =====
       const msg = getNonRepeating(messages, lastMessage);
       lastMessage = msg;
       const msgElement = document.getElementById("randomMessage");
-
-      // Fade message
       msgElement.style.opacity = 0;
+
       setTimeout(() => {
         msgElement.textContent = msg;
 
@@ -240,21 +247,20 @@ for (let i = 0; i < NUM_SPARKLES; i++) {
         lastStyle = style;
 
         msgElement.style.fontFamily = style.font;
-        msgElement.style.color = "white"; // ensure text is white
-        msgElement.style.textShadow = style.glow ? "0 0 10px rgba(255, 255, 150, 0.9)" : "none"; // yellowish glow
+        msgElement.style.color = "white"; // force text color
         msgElement.style.fontStyle = style.italic ? "italic" : "normal";
         msgElement.style.fontSize = style.size;
-        msgElement.style.textShadow = style.glow ? "0 0 10px rgba(255,255,255,0.8)" : "none";
+        msgElement.style.textShadow = style.glow ? "0 0 10px rgba(255, 255, 150, 0.9)" : "none";
 
         msgElement.style.opacity = 1;
       }, 200);
 
-      // Track
+      // ===== Spotify =====
       const track = getNonRepeating(tracks, lastTrack);
       lastTrack = track;
       document.getElementById("musicContainer").innerHTML = `
         <iframe src="${track}" width="300" height="80"
-          frameborder="0" allow="encrypted-media" allowfullscreen>
+          frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
         </iframe>
       `;
     }
@@ -263,8 +269,7 @@ for (let i = 0; i < NUM_SPARKLES; i++) {
     generateHype();
 
     // ===== BUTTON =====
-    document.getElementById("refreshBtn")
-      .addEventListener("click", generateHype);
+    document.getElementById("refreshBtn").addEventListener("click", generateHype);
 
   </script>
 
