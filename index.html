@@ -9,21 +9,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@500&family=Pacifico&family=Oswald:wght@600&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== Body & Sparkles ===== */
+    /* ===== Body & Safe Area ===== */
     body {
       margin: 0;
-      padding-top: env(safe-area-inset-top, 50px);
+      padding-top: env(safe-area-inset-top, 20px); /* iPhone notch safe area */
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
       min-height: 100vh;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       position: relative;
       background: radial-gradient(circle at 20% 20%, #1a1a2e, #000);
       font-family: sans-serif;
     }
 
+    /* ===== Sparkles ===== */
     #sparkleContainer {
       position: absolute;
       top: 0;
@@ -52,8 +54,13 @@
 
     /* ===== Message ===== */
     #messageContainer {
+      width: 90vw;
+      max-width: 600px;
+      padding: 0 10px;
+      margin-top: 10px;
       margin-bottom: 10px;
       z-index: 5;
+      box-sizing: border-box;
     }
 
     .message {
@@ -64,10 +71,17 @@
       white-space: normal;
       word-wrap: break-word;
       overflow-wrap: break-word;
-      max-width: 90vw;
-      margin-bottom: 10px;
       transition: opacity 0.4s ease;
       text-shadow: 0 0 10px rgba(255,255,150,0.9);
+    }
+
+    @media screen and (max-width: 400px) {
+      .message {
+        font-size: 1.5rem;
+      }
+      #messageContainer {
+        margin-top: 10px;
+      }
     }
 
     /* ===== Image Wrapper ===== */
@@ -131,13 +145,6 @@
       border-radius: 10px;
     }
 
-    /* ===== Mobile font adjustments ===== */
-    @media screen and (max-width: 400px) {
-      .message {
-        font-size: 1.5rem;
-      }
-    }
-
   </style>
 </head>
 
@@ -164,19 +171,35 @@
 
   <script>
     // ===== CONTENT =====
-    const images = [
-      "images/pic1.jpeg",
-      "images/pic2.jpeg",
-      "images/pic3.jpeg"
-    ];
 
+    // Auto-generate image paths: pic1.jpeg … pic50.jpeg
+    const images = Array.from({length:15}, (_,i) => `images/pic${i+1}.jpeg`);
+
+    // More hype messages
     const messages = [
       "You ARE UNSTOPPABLE 💥",
       "TODAY IS YOUR DAY 🔥",
       "GO OWN THE WORLD 🌍",
-      "ABSOLUTE ICON ENERGY ✨"
+      "ABSOLUTE ICON ENERGY ✨",
+      "Slay all day 💖",
+      "Boss vibes only 👑",
+      "Radiate confidence 🌟",
+      "Sparkle like the star you are ✨",
+      "You’ve got this 💪",
+      "Legend in the making 🌈",
+      "Hustle, sparkle, repeat ✨",
+      "Glow up mode ON 💛",
+      "Today is yours to shine 🌞",
+      "Power up and slay ⚡",
+      "Keep shining, queen 👑",
+      "Limitless energy unleashed 🔥",
+      "Make magic happen ✨",
+      "Confidence = your superpower 💫",
+      "Shine bright like diamonds 💎",
+      "Epic vibes incoming 🚀"
     ];
 
+    // Spotify tracks
     const tracks = [
       "https://open.spotify.com/embed/track/7GhIk7Il098yCjg4BQjzvb?utm_source=generator&autoplay=1",
       "https://open.spotify.com/embed/track/3n3Ppam7vgaVa1iaRUc9Lp?utm_source=generator&autoplay=1",
@@ -222,7 +245,7 @@
 
     // ===== MAIN GENERATOR =====
     function generateHype() {
-      // ===== Image =====
+      // Image
       const img = getNonRepeating(images, lastImage);
       lastImage = img;
       const imgElement = document.getElementById("randomImage");
@@ -230,7 +253,7 @@
       imgElement.src = img + "?t=" + new Date().getTime();
       imgElement.onload = () => imgElement.classList.add("loaded");
 
-      // ===== Message =====
+      // Message
       const msg = getNonRepeating(messages, lastMessage);
       lastMessage = msg;
       const msgElement = document.getElementById("randomMessage");
@@ -247,7 +270,7 @@
         lastStyle = style;
 
         msgElement.style.fontFamily = style.font;
-        msgElement.style.color = "white"; // force text color
+        msgElement.style.color = "white";
         msgElement.style.fontStyle = style.italic ? "italic" : "normal";
         msgElement.style.fontSize = style.size;
         msgElement.style.textShadow = style.glow ? "0 0 10px rgba(255, 255, 150, 0.9)" : "none";
@@ -255,7 +278,7 @@
         msgElement.style.opacity = 1;
       }, 200);
 
-      // ===== Spotify =====
+      // Spotify
       const track = getNonRepeating(tracks, lastTrack);
       lastTrack = track;
       document.getElementById("musicContainer").innerHTML = `
