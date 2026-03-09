@@ -1,300 +1,314 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Daily Hype ✨</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Hype ✨</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@500&family=Pacifico&family=Oswald:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@500&family=Pacifico&family=Oswald:wght@600&display=swap" rel="stylesheet">
 
-  <style>
-    /* ===== Body & Safe Area ===== */
-    body {
-      margin: 0;
-      padding-top: env(safe-area-inset-top, 20px); /* iPhone notch safe area */
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      min-height: 100vh;
-      overflow-x: hidden;
-      overflow-y: auto;
-      position: relative;
-      background: radial-gradient(circle at 20% 20%, #1a1a2e, #000);
-      font-family: sans-serif;
-    }
+<style>
 
-    /* ===== Sparkles ===== */
-    #sparkleContainer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
+body{
+margin:0;
+padding-top:env(safe-area-inset-top,20px);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:flex-start;
+min-height:100vh;
+background:radial-gradient(circle at 20% 20%, #1a1a2e, #000);
+overflow-x:hidden;
+font-family:sans-serif;
+}
 
-    .sparkle {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: white;
-      border-radius: 50%;
-      opacity: 0;
-      animation: twinkle 1.5s infinite;
-    }
+/* sparkles */
 
-    @keyframes twinkle {
-      0%, 100% { opacity: 0; transform: scale(0.5); }
-      50% { opacity: 1; transform: scale(1.5); }
-    }
+#sparkleContainer{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+overflow:hidden;
+z-index:0;
+}
 
-    /* ===== Message ===== */
-    #messageContainer {
-      width: 90vw;
-      max-width: 600px;
-      padding: 0 10px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      z-index: 5;
-      box-sizing: border-box;
-    }
+.sparkle{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+border-radius:50%;
+opacity:0;
+animation:twinkle 1.5s infinite;
+}
 
-    .message {
-      color: white;
-      font-weight: bold;
-      font-size: 1.8rem;
-      text-align: center;
-      white-space: normal;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      transition: opacity 0.4s ease;
-      text-shadow: 0 0 10px rgba(255,255,150,0.9);
-    }
+@keyframes twinkle{
+0%,100%{opacity:0;transform:scale(0.5)}
+50%{opacity:1;transform:scale(1.5)}
+}
 
-    @media screen and (max-width: 400px) {
-      .message {
-        font-size: 1.5rem;
-      }
-      #messageContainer {
-        margin-top: 10px;
-      }
-    }
+/* message */
 
-    /* ===== Image Wrapper ===== */
-    .imageWrapper {
-      display: inline-block;
-      position: relative;
-      z-index: 2;
-    }
+#messageContainer{
+width:90vw;
+max-width:600px;
+margin-top:10px;
+margin-bottom:15px;
+z-index:5;
+text-align:center;
+}
 
-    .imageWrapper img {
-      max-width: 80vw;
-      max-height: 60vh;
-      border-radius: 20px;
-      opacity: 0;
-      transform: scale(0.95);
-      transition: opacity 1s ease, transform 1s ease;
-      animation: subtleZoom 10s infinite alternate ease-in-out;
-      display: block;
-      margin: 0 auto;
-    }
+.message{
+color:white;
+font-weight:bold;
+font-size:1.9rem;
+word-wrap:break-word;
+overflow-wrap:break-word;
+transition:opacity .4s ease;
+text-shadow:0 0 10px rgba(255,255,150,0.9);
+}
 
-    .imageWrapper img.loaded {
-      opacity: 1;
-      transform: scale(1);
-    }
+/* image */
 
-    @keyframes subtleZoom {
-      from { transform: scale(1); }
-      to { transform: scale(1.05); }
-    }
+.imageWrapper{
+display:inline-block;
+position:relative;
+z-index:2;
+}
 
-    /* ===== Refresh Button ===== */
-    #refreshBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: white;
-      color: black;
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      font-size: 20px;
-      cursor: pointer;
-      z-index: 10;
-    }
+.imageWrapper img{
+max-width:80vw;
+max-height:60vh;
+border-radius:20px;
+opacity:0;
+transform:scale(.95);
+transition:opacity 2s ease, transform 2s ease;
+animation:subtleZoom 12s infinite alternate ease-in-out;
+}
 
-    /* ===== Spotify Player ===== */
-    #musicContainer {
-      margin-top: 20px;
-      margin-bottom: 40px;
-      display: flex;
-      justify-content: center;
-      z-index: 3;
-    }
+.imageWrapper img.loaded{
+opacity:1;
+transform:scale(1);
+}
 
-    #musicContainer iframe {
-      max-width: 300px;
-      width: 90vw;
-      height: 80px;
-      border-radius: 10px;
-    }
+@keyframes subtleZoom{
+from{transform:scale(1)}
+to{transform:scale(1.05)}
+}
 
-  </style>
+/* refresh */
+
+#refreshBtn{
+position:fixed;
+bottom:20px;
+right:20px;
+background:white;
+color:black;
+border:none;
+border-radius:50%;
+width:50px;
+height:50px;
+font-size:22px;
+cursor:pointer;
+z-index:10;
+}
+
+/* spotify */
+
+#musicContainer{
+margin-top:20px;
+margin-bottom:40px;
+display:flex;
+justify-content:center;
+z-index:3;
+}
+
+#musicContainer iframe{
+width:90vw;
+max-width:320px;
+height:80px;
+border-radius:10px;
+border:none;
+}
+
+</style>
 </head>
 
 <body>
 
-  <!-- Sparkle Background -->
-  <div id="sparkleContainer"></div>
+<div id="sparkleContainer"></div>
 
-  <!-- Message -->
-  <div id="messageContainer">
-    <div class="message" id="randomMessage"></div>
-  </div>
+<div id="messageContainer">
+<div class="message" id="randomMessage"></div>
+</div>
 
-  <!-- Image -->
-  <div class="imageWrapper">
-    <img id="randomImage" src="" />
-  </div>
+<div class="imageWrapper">
+<img id="randomImage" src="">
+</div>
 
-  <!-- Spotify player -->
-  <div id="musicContainer"></div>
+<div id="musicContainer"></div>
 
-  <!-- Refresh button -->
-  <button id="refreshBtn">✨</button>
+<button id="refreshBtn">✨</button>
 
-  <script>
-    // ===== CONTENT =====
+<script>
 
-    // Auto-generate image paths: pic1.jpeg … pic50.jpeg
-    const images = Array.from({length:15}, (_,i) => `images/pic${i+1}.jpeg`);
+/* IMAGES */
 
-    // More hype messages
-    const messages = [
-      "You ARE UNSTOPPABLE 💥",
-      "TODAY IS YOUR DAY 🔥",
-      "GO OWN THE WORLD 🌍",
-      "ABSOLUTE ICON ENERGY ✨",
-      "Slay all day 💖",
-      "Boss vibes only 👑",
-      "Radiate confidence 🌟",
-      "Sparkle like the star you are ✨",
-      "You’ve got this 💪",
-      "Legend in the making 🌈",
-      "Hustle, sparkle, repeat ✨",
-      "Glow up mode ON 💛",
-      "Today is yours to shine 🌞",
-      "Power up and slay ⚡",
-      "Keep shining, queen 👑",
-      "Limitless energy unleashed 🔥",
-      "Make magic happen ✨",
-      "Confidence = your superpower 💫",
-      "Shine bright like diamonds 💎",
-      "Epic vibes incoming 🚀"
-    ];
+const images = Array.from({length:25},(_,i)=>`images/pic${i+1}.jpeg`)
 
-    // Spotify tracks
-    const tracks = [
-      "https://open.spotify.com/embed/track/7GhIk7Il098yCjg4BQjzvb?utm_source=generator&autoplay=1",
-      "https://open.spotify.com/embed/track/3n3Ppam7vgaVa1iaRUc9Lp?utm_source=generator&autoplay=1",
-      "https://open.spotify.com/embed/track/1AhDOtG9vPSOmsWgNW0BEY?utm_source=generator&autoplay=1"
-    ];
+/* MESSAGES */
 
-    // ===== STATE =====
-    let lastImage = null;
-    let lastMessage = null;
-    let lastTrack = null;
-    let lastStyle = null;
+const messages = [
+"You are unstoppable 💫",
+"Main character energy activated ✨",
+"Today belongs to you 🔥",
+"You radiate power 💖",
+"Confidence looks good on you 👑",
+"Step into your magic ✨",
+"Icon behavior only 💅",
+"You were built for greatness 🚀",
+"Glow different today 🌟",
+"Unmatched energy 💥",
+"You're doing amazing 💛",
+"Walk like you own the universe 🌌",
+"Limitless potential activated ⚡",
+"Legend in progress 🌈",
+"Sparkle unapologetically ✨",
+"Dream big, move bigger 💫",
+"Everything is aligning for you 🌠",
+"Keep shining 🌟",
+"Pure power mode 💥",
+"You’ve got this 💪"
+]
 
-    const textStyles = [
-      { font: "'Playfair Display', serif", italic: true, glow: true, size: "2rem" },
-      { font: "'Montserrat', sans-serif", italic: false, glow: false, size: "1.8rem" },
-      { font: "'Pacifico', cursive", italic: false, glow: true, size: "2.2rem" },
-      { font: "'Oswald', sans-serif", italic: false, glow: true, size: "2rem" }
-    ];
+/* SPOTIFY */
 
-    // ===== HELPER FUNCTION =====
-    function getNonRepeating(arr, lastItem) {
-      let newItem;
-      do {
-        newItem = arr[Math.floor(Math.random() * arr.length)];
-      } while (newItem === lastItem && arr.length > 1);
-      return newItem;
-    }
+const tracks=[
+"https://open.spotify.com/embed/track/7GhIk7Il098yCjg4BQjzvb?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/3n3Ppam7vgaVa1iaRUc9Lp?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/1AhDOtG9vPSOmsWgNW0BEY?utm_source=generator&autoplay=1"
+]
 
-    // ===== Twinkling Sparkles =====
-    const sparkleContainer = document.getElementById("sparkleContainer");
-    const NUM_SPARKLES = 85;
+/* TEXT STYLES */
 
-    for (let i = 0; i < NUM_SPARKLES; i++) {
-      const sparkle = document.createElement("div");
-      sparkle.classList.add("sparkle");
-      sparkle.style.top = Math.random() * 100 + "%";
-      sparkle.style.left = Math.random() * 100 + "%";
-      sparkle.style.width = sparkle.style.height = (Math.random() * 2 + 1) + "px";
-      sparkle.style.animationDuration = (Math.random() * 1 + 1) + "s";
-      sparkle.style.animationDelay = Math.random() * 3 + "s";
-      sparkleContainer.appendChild(sparkle);
-    }
+const textStyles=[
+{font:"'Playfair Display',serif",italic:true,glow:true,size:"2rem"},
+{font:"'Montserrat',sans-serif",italic:false,glow:false,size:"1.8rem"},
+{font:"'Pacifico',cursive",italic:false,glow:true,size:"2.2rem"},
+{font:"'Oswald',sans-serif",italic:false,glow:true,size:"2rem"}
+]
 
-    // ===== MAIN GENERATOR =====
-    function generateHype() {
-      // Image
-      const img = getNonRepeating(images, lastImage);
-      lastImage = img;
-      const imgElement = document.getElementById("randomImage");
-      imgElement.classList.remove("loaded");
-      imgElement.src = img + "?t=" + new Date().getTime();
-      imgElement.onload = () => imgElement.classList.add("loaded");
+/* HISTORY (last 2 prevention) */
 
-      // Message
-      const msg = getNonRepeating(messages, lastMessage);
-      lastMessage = msg;
-      const msgElement = document.getElementById("randomMessage");
-      msgElement.style.opacity = 0;
+let imageHistory=[]
+let messageHistory=[]
+let trackHistory=[]
+let styleHistory=[]
 
-      setTimeout(() => {
-        msgElement.textContent = msg;
+/* NON REPEATING PICKER */
 
-        // Random style without consecutive repeat
-        let style;
-        do {
-          style = textStyles[Math.floor(Math.random() * textStyles.length)];
-        } while (style === lastStyle && textStyles.length > 1);
-        lastStyle = style;
+function getNonRepeating(arr,history){
 
-        msgElement.style.fontFamily = style.font;
-        msgElement.style.color = "white";
-        msgElement.style.fontStyle = style.italic ? "italic" : "normal";
-        msgElement.style.fontSize = style.size;
-        msgElement.style.textShadow = style.glow ? "0 0 10px rgba(255, 255, 150, 0.9)" : "none";
+let item
 
-        msgElement.style.opacity = 1;
-      }, 200);
+do{
+item=arr[Math.floor(Math.random()*arr.length)]
+}
+while(history.includes(item) && arr.length>history.length)
 
-      // Spotify
-      const track = getNonRepeating(tracks, lastTrack);
-      lastTrack = track;
-      document.getElementById("musicContainer").innerHTML = `
-        <iframe src="${track}" width="300" height="80"
-          frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-        </iframe>
-      `;
-    }
+history.push(item)
 
-    // ===== INITIAL RUN =====
-    generateHype();
+if(history.length>2){
+history.shift()
+}
 
-    // ===== BUTTON =====
-    document.getElementById("refreshBtn").addEventListener("click", generateHype);
+return item
 
-  </script>
+}
+
+/* SPARKLES */
+
+const sparkleContainer=document.getElementById("sparkleContainer")
+
+for(let i=0;i<85;i++){
+
+const s=document.createElement("div")
+
+s.className="sparkle"
+s.style.top=Math.random()*100+"%"
+s.style.left=Math.random()*100+"%"
+s.style.width=s.style.height=(Math.random()*2+1)+"px"
+s.style.animationDuration=(Math.random()*1+1)+"s"
+s.style.animationDelay=Math.random()*3+"s"
+
+sparkleContainer.appendChild(s)
+
+}
+
+/* GENERATOR */
+
+function generateHype(){
+
+/* image */
+
+const img=getNonRepeating(images,imageHistory)
+
+const imgEl=document.getElementById("randomImage")
+
+imgEl.classList.remove("loaded")
+imgEl.src=img+"?t="+Date.now()
+
+imgEl.onload=()=>imgEl.classList.add("loaded")
+
+/* message */
+
+const msg=getNonRepeating(messages,messageHistory)
+
+const msgEl=document.getElementById("randomMessage")
+
+msgEl.style.opacity=0
+
+setTimeout(()=>{
+
+msgEl.textContent=msg
+
+const style=getNonRepeating(textStyles,styleHistory)
+
+msgEl.style.fontFamily=style.font
+msgEl.style.fontStyle=style.italic?"italic":"normal"
+msgEl.style.fontSize=style.size
+msgEl.style.color="white"
+msgEl.style.textShadow=style.glow?"0 0 10px rgba(255,255,150,0.9)":"none"
+
+msgEl.style.opacity=1
+
+},200)
+
+/* music */
+
+const track=getNonRepeating(tracks,trackHistory)
+
+document.getElementById("musicContainer").innerHTML=
+`<iframe src="${track}" allow="autoplay; encrypted-media"></iframe>`
+
+}
+
+/* start */
+
+generateHype()
+
+/* refresh */
+
+document.getElementById("refreshBtn").addEventListener("click",generateHype)
+
+/* regenerate if tab reopened */
+
+window.addEventListener("focus",generateHype)
+
+</script>
 
 </body>
 </html>
