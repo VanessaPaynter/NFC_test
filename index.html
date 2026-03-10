@@ -4,204 +4,200 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Hype ✨</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@500&family=Pacifico&family=Oswald:wght@600&display=swap" rel="stylesheet">
+
 <style>
-  body{
-    margin:0;
-    padding-top:env(safe-area-inset-top,20px);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:flex-start;
-    min-height:100vh;
-    background:radial-gradient(circle at 20% 20%, #1a1a2e,#000);
-    overflow-x:hidden;
-    font-family:sans-serif;
-    position:relative;
-  }
+body {
+  margin: 0;
+  padding-top: env(safe-area-inset-top,20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  background: radial-gradient(circle at 20% 20%, #1a1a2e,#000);
+  overflow-x: hidden;
+  font-family: sans-serif;
+}
 
-  /* Sparkles */
-  #sparkleContainer{
-    position:absolute;
-    top:0; left:0;
-    width:100%; height:100%;
-    pointer-events:none;
-    overflow:hidden;
-    z-index:0;
-  }
-  .sparkle{
-    position:absolute;
-    width:2px; height:2px;
-    background:white;
-    border-radius:50%;
-    opacity:0;
-    animation:twinkle 1.5s infinite;
-  }
-  @keyframes twinkle{
-    0%,100%{opacity:0;transform:scale(.5)}
-    50%{opacity:1;transform:scale(1.6)}
-  }
+/* Glass card container */
+#container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90vw;
+  max-width: 600px;
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.05);
+  border-radius: 24px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.2);
+  z-index: 2;
+  margin-top: 20px;
+}
 
-  /* Container */
-  .container{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:flex-start;
-    width:90vw;
-    max-width:600px;
-    backdrop-filter: blur(12px);
-    background:rgba(255,255,255,0.05);
-    border-radius:25px;
-    box-shadow:0 0 30px rgba(255,255,255,0.2);
-    padding:20px;
-    margin-top:20px;
-    z-index:2;
-  }
+/* Sparkles */
+#sparkleContainer{
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:0;
+}
+.sparkle{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  border-radius:50%;
+  opacity:0;
+  animation:twinkle 1.5s infinite;
+}
+@keyframes twinkle{
+  0%,100%{opacity:0; transform: scale(0.5);}
+  50%{opacity:1; transform: scale(1.6);}
+}
 
-  /* Message */
-  #randomMessage{
-    color:white;
-    font-weight:bold;
-    font-size:1.9rem;
-    text-align:center;
-    word-wrap:break-word;
-    transition:opacity 0.4s ease;
-    text-shadow:0 0 12px rgba(255,255,150,0.9);
-    margin-bottom:15px;
-  }
+/* Boss overlay */
+#bossOverlay{
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  font-size: 2rem;
+  font-weight:bold;
+  color:#ffe5b4;
+  text-shadow: 0 0 15px #ffd700;
+  opacity:0;
+  pointer-events:none;
+  z-index: 20;
+  text-align:center;
+}
 
-  /* Image */
-  .imageWrapper{
-    position:relative;
-    width:100%;
-    display:flex;
-    justify-content:center;
-    margin-bottom:15px;
-  }
-  .imageWrapper img{
-    max-width:100%;
-    max-height:60vh;
-    border-radius:20px;
-    opacity:0;
-    transform:scale(.96);
-    transition:opacity 2s ease, transform 2s ease;
-    animation:zoom 12s infinite alternate ease-in-out;
-  }
-  .imageWrapper img.loaded{
-    opacity:1;
-    transform:scale(1);
-  }
-  @keyframes zoom{
-    from{transform:scale(1)}
-    to{transform:scale(1.05)}
-  }
+/* Message */
+#messageContainer{
+  width:100%;
+  text-align:center;
+  margin-bottom:15px;
+}
+.message{
+  color:white;
+  font-weight:bold;
+  font-size:1.9rem;
+  word-wrap:break-word;
+  transition:opacity 0.5s ease;
+  text-shadow:0 0 12px rgba(255,255,150,0.9);
+}
 
-  /* Spotify */
-  #musicContainer{
-    width:100%;
-    display:flex;
-    justify-content:center;
-    margin-bottom:10px;
-  }
-  #musicContainer iframe{
-    width:90%;
-    max-width:320px;
-    height:80px;
-    border-radius:12px;
-    border:none;
-  }
+/* Image */
+.imageWrapper{
+  display:inline-block;
+  position:relative;
+  width:100%;
+}
+.imageWrapper img{
+  max-width:100%;
+  max-height:60vh;
+  border-radius:20px;
+  opacity:0;
+  transform: scale(0.96);
+  transition: opacity 1.5s ease, transform 1.5s ease;
+  animation: zoom 12s infinite alternate ease-in-out;
+}
+.imageWrapper img.loaded{
+  opacity:1;
+  transform: scale(1);
+}
+@keyframes zoom{
+  from{transform:scale(1);}
+  to{transform:scale(1.05);}
+}
 
-  /* Boss Bitch Overlay */
-  #bossOverlay{
-    position:absolute;
-    top:50%; left:50%;
-    transform:translate(-50%,-50%);
-    color:#ffe066;
-    font-size:2rem;
-    font-weight:bold;
-    text-shadow:0 0 20px #ffe066,0 0 40px #ffdd99;
-    opacity:0;
-    pointer-events:none;
-    transition:opacity 0.3s ease;
-    z-index:5;
-  }
+/* Spotify */
+#musicContainer{
+  margin-top:20px;
+  margin-bottom:20px;
+  display:flex;
+  justify-content:center;
+}
+#musicContainer iframe{
+  width:90vw;
+  max-width:320px;
+  height:80px;
+  border-radius:12px;
+  border:none;
+}
 
-  /* Refresh */
-  #refreshBtn{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    background:white;
-    color:black;
-    border:none;
-    border-radius:50%;
-    width:52px;
-    height:52px;
-    font-size:22px;
-    cursor:pointer;
-    z-index:10;
-  }
+/* Refresh Button */
+#refreshBtn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:white;
+  color:black;
+  border:none;
+  border-radius:50%;
+  width:52px;
+  height:52px;
+  font-size:22px;
+  cursor:pointer;
+  z-index:10;
+}
 
-  /* Confetti */
-  .confetti{
-    position:absolute;
-    width:8px; height:8px;
-    background: #ffe066;
-    opacity:1;
-    pointer-events:none;
-    border-radius:50%;
-    animation:confettiFall 1s ease-out forwards;
+/* Mobile font adjustment */
+@media screen and (max-width:400px){
+  .message{
+    font-size:1.5rem;
   }
-  @keyframes confettiFall{
-    to { transform:translateY(100vh) rotate(720deg); opacity:0;}
-  }
-
-  @media screen and (max-width:400px){
-    #randomMessage{font-size:1.5rem;}
-  }
-
+}
 </style>
 </head>
 <body>
 
 <div id="sparkleContainer"></div>
 
-<div class="container">
-  <div id="randomMessage"></div>
+<div id="bossOverlay">✨ Boss Bitch Energy Activated ✨</div>
+
+<div id="container">
+  <div id="messageContainer"><div class="message" id="randomMessage"></div></div>
   <div class="imageWrapper"><img id="randomImage"></div>
   <div id="musicContainer"></div>
 </div>
 
-<div id="bossOverlay">✨ Boss Bitch Energy Activated ✨</div>
 <button id="refreshBtn">✨</button>
 
 <script>
 /* ---------- DATA ---------- */
-const images=Array.from({length:50},(_,i)=>`images/pic${i+1}.jpeg`);
-const messages=[
-  "You are unstoppable ✨",
-  "Main character energy activated 💫",
-  "Today belongs to you 🔥",
-  "Confidence looks incredible on you 👑",
-  "Your glow is undeniable ✨",
-  "Icon behaviour only 💅",
-  "Limitless energy today ⚡",
-  "Dream bigger today 🌟",
-  "You radiate power 💛",
-  "Everything is aligning for you 🌠",
-  "Walk like you own the universe 🌌",
-  "You've got this 💪",
-  "Pure brilliance today ✨",
-  "You are doing amazing 🌟",
-  "Legend energy activated 🚀",
-  "Step into your magic ✨",
-  "Glow differently today 💫",
-  "You are powerful beyond measure ⚡",
-  "Your vibe is unmatched 💥",
-  "Sparkle unapologetically ✨"
-];
+const images = Array.from({length:50},(_,i)=>`images/pic${i+1}.jpeg`);
 
+const messages=[
+"You are unstoppable ✨",
+"You Radiate Main character energy 💫",
+"Today belongs to you 🔥",
+"Confidence looks incredible on you 👑",
+"Your glow is undeniable ✨",
+"Icon behaviour only 💅",
+"Limitless energy today ⚡",
+"Dream bigger today 🌟",
+"You radiate power 💛",
+"Your ChAoS is MAGIC ✨",
+"Everything is aligning for you 🌠",
+"Walk like you own the universe 🌌",
+"You've got this 💪",
+"Pure brilliance today ✨",
+"You are doing amazing 🌟",
+"Legend energy 🚀",
+"Step into your magic ✨",
+"Glow differently today 💫",
+"KICK ASS TWIN💥",
+"You are powerful beyond measure ⚡",
+"Your vibe is unmatched 💥",
+"Sparkle unapologetically ✨"
+];
 const tracks=[
 
 "https://open.spotify.com/embed/track/7GhIk7Il098yCjg4BQjzvb?utm_source=generator&autoplay=1",
@@ -244,7 +240,7 @@ const textStyles=[
   {font:"'Oswald',sans-serif",italic:false,glow:true,size:"2rem"}
 ];
 
-/* ---------- SHUFFLE BAG ---------- */
+/* ---------- SHUFFLE BAG SYSTEM ---------- */
 function shuffle(array){
   for(let i=array.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
@@ -263,6 +259,7 @@ function createShuffleBag(source){
   }
 }
 
+/* Randomizers */
 const getImage=createShuffleBag(images);
 const getMessage=createShuffleBag(messages);
 const getTrack=createShuffleBag(tracks);
@@ -281,60 +278,78 @@ for(let i=0;i<85;i++){
   sparkleContainer.appendChild(s);
 }
 
-/* ---------- GENERATOR ---------- */
-function generateHype(){
-  /* Boss Overlay */
-  const overlay=document.getElementById("bossOverlay");
-  overlay.style.opacity=1;
-  setTimeout(()=>overlay.style.opacity=0,600);
-  createConfetti();
-
-  /* Image */
-  const img=getImage();
-  const imgEl=document.getElementById("randomImage");
-  imgEl.classList.remove("loaded");
-  imgEl.src=img+"?"+Date.now();
-  imgEl.onload=()=>imgEl.classList.add("loaded");
-
-  /* Message */
-  const msg=getMessage();
-  const msgEl=document.getElementById("randomMessage");
-  msgEl.style.opacity=0;
-  setTimeout(()=>{
-    const style=getStyle();
-    msgEl.textContent=msg;
-    msgEl.style.fontFamily=style.font;
-    msgEl.style.fontStyle=style.italic?"italic":"normal";
-    msgEl.style.fontSize=style.size;
-    msgEl.style.color="white";
-    msgEl.style.textShadow=style.glow?"0 0 12px rgba(255,255,150,.9)":"none";
-    msgEl.style.opacity=1;
-  },200);
-
-  /* Spotify */
-  const track=getTrack();
-  document.getElementById("musicContainer").innerHTML=`<iframe src="${track}" allow="autoplay; encrypted-media"></iframe>`;
-}
-
 /* ---------- CONFETTI ---------- */
 function createConfetti(){
-  const confettiCount=15;
-  for(let i=0;i<confettiCount;i++){
+  for(let i=0;i<30;i++){
     const c=document.createElement("div");
-    c.className="confetti";
-    c.style.left=Math.random()*90+"%";
-    c.style.background=["#ffe066","#ffb6b9","#ff6f91","#d0a9f5"][Math.floor(Math.random()*4)];
+    c.style.position="fixed";
+    c.style.width=c.style.height="8px";
+    c.style.background=['#ffe5b4','#ff99cc','#fff','#ffd700'][Math.floor(Math.random()*4)];
+    c.style.top="50%";
+    c.style.left="50%";
+    c.style.borderRadius="50%";
+    c.style.zIndex="25";
+    c.style.opacity="0.9";
+    c.style.transform=`translate(-50%,-50%) rotate(${Math.random()*360}deg)`;
+    c.style.transition="all 1s ease-out";
     document.body.appendChild(c);
-    setTimeout(()=>c.remove(),1000);
+    setTimeout(()=>{ 
+      c.style.top=Math.random()*100+"%";
+      c.style.left=Math.random()*100+"%";
+      c.style.opacity=0;
+      setTimeout(()=>c.remove(),1000);
+    },10);
   }
 }
 
-/* ---------- START ---------- */
+/* ---------- GENERATOR ---------- */
+function generateHype(){
+  const overlay=document.getElementById("bossOverlay");
+  overlay.style.opacity=1;
+  createConfetti();
+
+  // delay everything else until overlay fades
+  setTimeout(()=>{
+    overlay.style.opacity=0;
+
+    /* Image */
+    const img=getImage();
+    const imgEl=document.getElementById("randomImage");
+    imgEl.classList.remove("loaded");
+    imgEl.src=img+"?"+Date.now();
+    imgEl.onload=()=>imgEl.classList.add("loaded");
+
+    /* Message */
+    const msg=getMessage();
+    const msgEl=document.getElementById("randomMessage");
+    msgEl.style.opacity=0;
+    setTimeout(()=>{
+      const style=getStyle();
+      msgEl.textContent=msg;
+      msgEl.style.fontFamily=style.font;
+      msgEl.style.fontStyle=style.italic?"italic":"normal";
+      msgEl.style.fontSize=style.size;
+      msgEl.style.color="white";
+      msgEl.style.textShadow=style.glow?"0 0 12px rgba(255,255,150,.9)":"none";
+      msgEl.style.opacity=1;
+    },200);
+
+    /* Spotify */
+    const track=getTrack();
+    document.getElementById("musicContainer").innerHTML=`<iframe src="${track}" allow="autoplay; encrypted-media"></iframe>`;
+
+  },1000);
+}
+
+/* ---------- INITIAL RUN ---------- */
 generateHype();
+
+/* ---------- REFRESH BUTTON ---------- */
 document.getElementById("refreshBtn").addEventListener("click",generateHype);
+
+/* ---------- REGENERATE ON TAB FOCUS ---------- */
 window.addEventListener("focus",generateHype);
 
 </script>
 </body>
-</html>
 </html>
