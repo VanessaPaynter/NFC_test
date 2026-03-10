@@ -1,325 +1,340 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Daily Hype ✨</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@500&family=Pacifico&family=Oswald:wght@600&display=swap" rel="stylesheet">
-
 <style>
+  body{
+    margin:0;
+    padding-top:env(safe-area-inset-top,20px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    min-height:100vh;
+    background:radial-gradient(circle at 20% 20%, #1a1a2e,#000);
+    overflow-x:hidden;
+    font-family:sans-serif;
+    position:relative;
+  }
 
-body{
-margin:0;
-padding-top:env(safe-area-inset-top,20px);
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:flex-start;
-min-height:100vh;
-background:radial-gradient(circle at 20% 20%, #1a1a2e,#000);
-overflow-x:hidden;
-font-family:sans-serif;
-}
+  /* Sparkles */
+  #sparkleContainer{
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:0;
+  }
+  .sparkle{
+    position:absolute;
+    width:2px; height:2px;
+    background:white;
+    border-radius:50%;
+    opacity:0;
+    animation:twinkle 1.5s infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:0;transform:scale(.5)}
+    50%{opacity:1;transform:scale(1.6)}
+  }
 
-/* sparkles */
+  /* Container */
+  .container{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    width:90vw;
+    max-width:600px;
+    backdrop-filter: blur(12px);
+    background:rgba(255,255,255,0.05);
+    border-radius:25px;
+    box-shadow:0 0 30px rgba(255,255,255,0.2);
+    padding:20px;
+    margin-top:20px;
+    z-index:2;
+  }
 
-#sparkleContainer{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-pointer-events:none;
-overflow:hidden;
-z-index:0;
-}
+  /* Message */
+  #randomMessage{
+    color:white;
+    font-weight:bold;
+    font-size:1.9rem;
+    text-align:center;
+    word-wrap:break-word;
+    transition:opacity 0.4s ease;
+    text-shadow:0 0 12px rgba(255,255,150,0.9);
+    margin-bottom:15px;
+  }
 
-.sparkle{
-position:absolute;
-width:2px;
-height:2px;
-background:white;
-border-radius:50%;
-opacity:0;
-animation:twinkle 1.5s infinite;
-}
+  /* Image */
+  .imageWrapper{
+    position:relative;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin-bottom:15px;
+  }
+  .imageWrapper img{
+    max-width:100%;
+    max-height:60vh;
+    border-radius:20px;
+    opacity:0;
+    transform:scale(.96);
+    transition:opacity 2s ease, transform 2s ease;
+    animation:zoom 12s infinite alternate ease-in-out;
+  }
+  .imageWrapper img.loaded{
+    opacity:1;
+    transform:scale(1);
+  }
+  @keyframes zoom{
+    from{transform:scale(1)}
+    to{transform:scale(1.05)}
+  }
 
-@keyframes twinkle{
-0%,100%{opacity:0;transform:scale(.5)}
-50%{opacity:1;transform:scale(1.6)}
-}
+  /* Spotify */
+  #musicContainer{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin-bottom:10px;
+  }
+  #musicContainer iframe{
+    width:90%;
+    max-width:320px;
+    height:80px;
+    border-radius:12px;
+    border:none;
+  }
 
-/* message */
+  /* Boss Bitch Overlay */
+  #bossOverlay{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    color:#ffe066;
+    font-size:2rem;
+    font-weight:bold;
+    text-shadow:0 0 20px #ffe066,0 0 40px #ffdd99;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.3s ease;
+    z-index:5;
+  }
 
-#messageContainer{
-width:90vw;
-max-width:600px;
-margin-top:10px;
-margin-bottom:15px;
-z-index:5;
-text-align:center;
-}
+  /* Refresh */
+  #refreshBtn{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:white;
+    color:black;
+    border:none;
+    border-radius:50%;
+    width:52px;
+    height:52px;
+    font-size:22px;
+    cursor:pointer;
+    z-index:10;
+  }
 
-.message{
-color:white;
-font-weight:bold;
-font-size:1.9rem;
-word-wrap:break-word;
-transition:opacity .4s ease;
-text-shadow:0 0 12px rgba(255,255,150,.9);
-}
+  /* Confetti */
+  .confetti{
+    position:absolute;
+    width:8px; height:8px;
+    background: #ffe066;
+    opacity:1;
+    pointer-events:none;
+    border-radius:50%;
+    animation:confettiFall 1s ease-out forwards;
+  }
+  @keyframes confettiFall{
+    to { transform:translateY(100vh) rotate(720deg); opacity:0;}
+  }
 
-/* image */
-
-.imageWrapper{
-display:inline-block;
-position:relative;
-z-index:2;
-}
-
-.imageWrapper img{
-max-width:80vw;
-max-height:60vh;
-border-radius:20px;
-opacity:0;
-transform:scale(.96);
-transition:opacity 2s ease,transform 2s ease;
-animation:zoom 12s infinite alternate ease-in-out;
-}
-
-.imageWrapper img.loaded{
-opacity:1;
-transform:scale(1);
-}
-
-@keyframes zoom{
-from{transform:scale(1)}
-to{transform:scale(1.05)}
-}
-
-/* spotify */
-
-#musicContainer{
-margin-top:20px;
-margin-bottom:40px;
-display:flex;
-justify-content:center;
-z-index:3;
-}
-
-#musicContainer iframe{
-width:90vw;
-max-width:320px;
-height:80px;
-border-radius:12px;
-border:none;
-}
-
-/* refresh */
-
-#refreshBtn{
-position:fixed;
-bottom:20px;
-right:20px;
-background:white;
-color:black;
-border:none;
-border-radius:50%;
-width:52px;
-height:52px;
-font-size:22px;
-cursor:pointer;
-z-index:10;
-}
+  @media screen and (max-width:400px){
+    #randomMessage{font-size:1.5rem;}
+  }
 
 </style>
 </head>
-
 <body>
 
 <div id="sparkleContainer"></div>
 
-<div id="messageContainer">
-<div class="message" id="randomMessage"></div>
+<div class="container">
+  <div id="randomMessage"></div>
+  <div class="imageWrapper"><img id="randomImage"></div>
+  <div id="musicContainer"></div>
 </div>
 
-<div class="imageWrapper">
-<img id="randomImage">
-</div>
-
-<div id="musicContainer"></div>
-
+<div id="bossOverlay">✨ Boss Bitch Energy Activated ✨</div>
 <button id="refreshBtn">✨</button>
 
 <script>
-
 /* ---------- DATA ---------- */
-
-const images =
-Array.from({length:50},(_,i)=>`images/pic${i+1}.jpeg`)
-
+const images=Array.from({length:50},(_,i)=>`images/pic${i+1}.jpeg`);
 const messages=[
-
-"You are unstoppable ✨",
-"Main character energy activated 💫",
-"Today belongs to you 🔥",
-"Confidence looks incredible on you 👑",
-"Your glow is undeniable ✨",
-"Icon behaviour only 💅",
-"Limitless energy today ⚡",
-"Dream bigger today 🌟",
-"You radiate power 💛",
-"Everything is aligning for you 🌠",
-"Walk like you own the universe 🌌",
-"You've got this 💪",
-"Pure brilliance today ✨",
-"You are doing amazing 🌟",
-"Legend energy activated 🚀",
-"Step into your magic ✨",
-"Glow differently today 💫",
-"You are powerful beyond measure ⚡",
-"Your vibe is unmatched 💥",
-"Sparkle unapologetically ✨"
-
-]
+  "You are unstoppable ✨",
+  "Main character energy activated 💫",
+  "Today belongs to you 🔥",
+  "Confidence looks incredible on you 👑",
+  "Your glow is undeniable ✨",
+  "Icon behaviour only 💅",
+  "Limitless energy today ⚡",
+  "Dream bigger today 🌟",
+  "You radiate power 💛",
+  "Everything is aligning for you 🌠",
+  "Walk like you own the universe 🌌",
+  "You've got this 💪",
+  "Pure brilliance today ✨",
+  "You are doing amazing 🌟",
+  "Legend energy activated 🚀",
+  "Step into your magic ✨",
+  "Glow differently today 💫",
+  "You are powerful beyond measure ⚡",
+  "Your vibe is unmatched 💥",
+  "Sparkle unapologetically ✨"
+];
 
 const tracks=[
 
 "https://open.spotify.com/embed/track/7GhIk7Il098yCjg4BQjzvb?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/3fEX9NgOeklq816Fw00uoo?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/1a9dUxIQ2ehPH3992H9uPe?utm_source=generato&autoplay=1",
 "https://open.spotify.com/embed/track/3n3Ppam7vgaVa1iaRUc9Lp?utm_source=generator&autoplay=1",
-"https://open.spotify.com/embed/track/1AhDOtG9vPSOmsWgNW0BEY?utm_source=generator&autoplay=1"
-
+"https://open.spotify.com/embed/track/1AhDOtG9vPSOmsWgNW0BEY?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/1CPZ5BxNNd0n0nF4Orb9JS?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/43CPZZnuEm6huXdm1PCa5w?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/5yvVYFDUpbnjcnRBgjwTzM?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/4r8lRYnoOGdEi6YyI5OC1o?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/0eqH0ALoDQevq59YcQ53KE?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/4keuUM29CtIWgsPRzRhXoW?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/1uigwk5hNV84zRd5YQQRTk?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/4N0tDOF2bo9JEpSqLNlpjq?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/65ZihkVQO3KqPj7ZKxmcev?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/5XWlyfo0kZ8LF7VSyfS4Ew?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/6nzXkCBOhb2mxctNihOqbb?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/6fy6Zd9lRziSAYPntAaHCK?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/20jYtEun4dUdYZ9foaOC48?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/2chbuybiy6aDDBC985tJcP?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/1I37Zz2g3hk9eWxaNkj031?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/5b3XJ1pjrHO5JtY2PcTjnI?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/7FdmHr87G79PDRGy9SPBkZ?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/4w2GLmK2wnioVnb5CPQeex?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/4ChomJf8z16E6Zw4EoioYY?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/1uXbwHHfgsXcUKfSZw5ZJ0?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/78qd8dvwea0Gosb6Fe6j3k?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/4wH4dJgrsxONID6KS2tDQM?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/4N0tDOF2bo9JEpSqLNlpjq?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/6IbnUaczZBT34DhaD6S18F?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/4rBRRLgdB9DYJhqA9uVcWt?utm_source=generator&autoplay=1",
+"https://open.spotify.com/embed/track/0JiY190vktuhSGN6aqJdrt?utm_source=generator&autoplay=1"
 ]
 
 const textStyles=[
+  {font:"'Playfair Display',serif",italic:true,glow:true,size:"2rem"},
+  {font:"'Montserrat',sans-serif",italic:false,glow:false,size:"1.8rem"},
+  {font:"'Pacifico',cursive",italic:false,glow:true,size:"2.2rem"},
+  {font:"'Oswald',sans-serif",italic:false,glow:true,size:"2rem"}
+];
 
-{font:"'Playfair Display',serif",italic:true,glow:true,size:"2rem"},
-{font:"'Montserrat',sans-serif",italic:false,glow:false,size:"1.8rem"},
-{font:"'Pacifico',cursive",italic:false,glow:true,size:"2.2rem"},
-{font:"'Oswald',sans-serif",italic:false,glow:true,size:"2rem"}
-
-]
-
-/* ---------- SHUFFLE BAG SYSTEM ---------- */
-
+/* ---------- SHUFFLE BAG ---------- */
 function shuffle(array){
-
-for(let i=array.length-1;i>0;i--){
-const j=Math.floor(Math.random()*(i+1))
-;[array[i],array[j]]=[array[j],array[i]]
-}
-
+  for(let i=array.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [array[i],array[j]]=[array[j],array[i]];
+  }
 }
 
 function createShuffleBag(source){
-
-let bag=[]
-
-return function(){
-
-if(bag.length===0){
-bag=[...source]
-shuffle(bag)
+  let bag=[];
+  return function(){
+    if(bag.length===0){
+      bag=[...source];
+      shuffle(bag);
+    }
+    return bag.pop();
+  }
 }
 
-return bag.pop()
-
-}
-
-}
-
-/* create randomizers */
-
-const getImage=createShuffleBag(images)
-const getMessage=createShuffleBag(messages)
-const getTrack=createShuffleBag(tracks)
-const getStyle=createShuffleBag(textStyles)
+const getImage=createShuffleBag(images);
+const getMessage=createShuffleBag(messages);
+const getTrack=createShuffleBag(tracks);
+const getStyle=createShuffleBag(textStyles);
 
 /* ---------- SPARKLES ---------- */
-
-const sparkleContainer=document.getElementById("sparkleContainer")
-
+const sparkleContainer=document.getElementById("sparkleContainer");
 for(let i=0;i<85;i++){
-
-const s=document.createElement("div")
-
-s.className="sparkle"
-s.style.top=Math.random()*100+"%"
-s.style.left=Math.random()*100+"%"
-s.style.width=s.style.height=(Math.random()*2+1)+"px"
-s.style.animationDuration=(Math.random()*1+1)+"s"
-s.style.animationDelay=Math.random()*3+"s"
-
-sparkleContainer.appendChild(s)
-
+  const s=document.createElement("div");
+  s.className="sparkle";
+  s.style.top=Math.random()*100+"%";
+  s.style.left=Math.random()*100+"%";
+  s.style.width=s.style.height=(Math.random()*2+1)+"px";
+  s.style.animationDuration=(Math.random()*1+1)+"s";
+  s.style.animationDelay=Math.random()*3+"s";
+  sparkleContainer.appendChild(s);
 }
 
 /* ---------- GENERATOR ---------- */
-
 function generateHype(){
+  /* Boss Overlay */
+  const overlay=document.getElementById("bossOverlay");
+  overlay.style.opacity=1;
+  setTimeout(()=>overlay.style.opacity=0,600);
+  createConfetti();
 
-/* image */
+  /* Image */
+  const img=getImage();
+  const imgEl=document.getElementById("randomImage");
+  imgEl.classList.remove("loaded");
+  imgEl.src=img+"?"+Date.now();
+  imgEl.onload=()=>imgEl.classList.add("loaded");
 
-const img=getImage()
+  /* Message */
+  const msg=getMessage();
+  const msgEl=document.getElementById("randomMessage");
+  msgEl.style.opacity=0;
+  setTimeout(()=>{
+    const style=getStyle();
+    msgEl.textContent=msg;
+    msgEl.style.fontFamily=style.font;
+    msgEl.style.fontStyle=style.italic?"italic":"normal";
+    msgEl.style.fontSize=style.size;
+    msgEl.style.color="white";
+    msgEl.style.textShadow=style.glow?"0 0 12px rgba(255,255,150,.9)":"none";
+    msgEl.style.opacity=1;
+  },200);
 
-const imgEl=document.getElementById("randomImage")
-
-imgEl.classList.remove("loaded")
-imgEl.src=img+"?"+Date.now()
-
-imgEl.onload=()=>imgEl.classList.add("loaded")
-
-/* message */
-
-const msg=getMessage()
-
-const msgEl=document.getElementById("randomMessage")
-
-msgEl.style.opacity=0
-
-setTimeout(()=>{
-
-msgEl.textContent=msg
-
-const style=getStyle()
-
-msgEl.style.fontFamily=style.font
-msgEl.style.fontStyle=style.italic?"italic":"normal"
-msgEl.style.fontSize=style.size
-msgEl.style.color="white"
-msgEl.style.textShadow=style.glow?"0 0 12px rgba(255,255,150,.9)":"none"
-
-msgEl.style.opacity=1
-
-},200)
-
-/* spotify */
-
-const track=getTrack()
-
-document.getElementById("musicContainer").innerHTML=
-`<iframe src="${track}" allow="autoplay; encrypted-media"></iframe>`
-
+  /* Spotify */
+  const track=getTrack();
+  document.getElementById("musicContainer").innerHTML=`<iframe src="${track}" allow="autoplay; encrypted-media"></iframe>`;
 }
 
-/* start */
+/* ---------- CONFETTI ---------- */
+function createConfetti(){
+  const confettiCount=15;
+  for(let i=0;i<confettiCount;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*90+"%";
+    c.style.background=["#ffe066","#ffb6b9","#ff6f91","#d0a9f5"][Math.floor(Math.random()*4)];
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),1000);
+  }
+}
 
-generateHype()
-
-/* refresh */
-
-document
-.getElementById("refreshBtn")
-.addEventListener("click",generateHype)
-
-/* regenerate when tab reopened */
-
-window.addEventListener("focus",generateHype)
+/* ---------- START ---------- */
+generateHype();
+document.getElementById("refreshBtn").addEventListener("click",generateHype);
+window.addEventListener("focus",generateHype);
 
 </script>
-
 </body>
+</html>
 </html>
