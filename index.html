@@ -309,47 +309,48 @@ function createConfetti(){
   }
 }
 
-/* ---------- GENERATOR ---------- */
+/* ---------- Generator ---------- */
 function generateHype(){
   const bossOverlay = document.getElementById("bossOverlay");
 
-  // 1️⃣ Set the overlay text with 2 lines
+  // 1️⃣ Show Boss Bitch overlay
   bossOverlay.textContent = `✨ Boss Bitch Energy\nActivated ✨`;
-
-  // 2️⃣ Show overlay
   bossOverlay.style.opacity = 1;
 
-  // delay everything else until overlay fades
+  // small confetti burst
+  for(let i=0;i<20;i++) createConfetti();
+
+  // 2️⃣ After 1s, hide overlay and show everything else
   setTimeout(()=>{
-    overlay.style.opacity=0;
+    bossOverlay.style.opacity=0;
 
-    /* Image */
-    const img=getImage();
-    const imgEl=document.getElementById("randomImage");
+    // Image
+    const img = getImage();
+    const imgEl = document.getElementById("randomImage");
     imgEl.classList.remove("loaded");
-    imgEl.src=img+"?"+Date.now();
-    imgEl.onload=()=>imgEl.classList.add("loaded");
+    imgEl.src = img+"?"+Date.now();
+    imgEl.onload = ()=>imgEl.classList.add("loaded");
 
-    /* Message */
-    const msg=getMessage();
-    const msgEl=document.getElementById("randomMessage");
-    msgEl.style.opacity=0;
+    // Message
+    const msg = getMessage();
+    const msgEl = document.getElementById("randomMessage");
+    msgEl.style.opacity = 0;
     setTimeout(()=>{
-      const style=getStyle();
-      msgEl.textContent=msg;
-      msgEl.style.fontFamily=style.font;
-      msgEl.style.fontStyle=style.italic?"italic":"normal";
-      msgEl.style.fontSize=style.size;
-      msgEl.style.color="white";
-      msgEl.style.textShadow=style.glow?"0 0 12px rgba(255,255,150,.9)":"none";
-      msgEl.style.opacity=1;
+      const style = getStyle();
+      msgEl.textContent = msg;
+      msgEl.style.fontFamily = style.font;
+      msgEl.style.fontStyle = style.italic?"italic":"normal";
+      msgEl.style.fontSize = style.size;
+      msgEl.style.color = "white";
+      msgEl.style.textShadow = style.glow?"0 0 12px rgba(255,255,150,.9)":"none";
+      msgEl.style.opacity = 1;
     },200);
 
-    /* Spotify */
-    const track=getTrack();
-    document.getElementById("musicContainer").innerHTML=`<iframe src="${track}" allow="autoplay; encrypted-media"></iframe>`;
+    // Track
+    const track = getTrack();
+    document.getElementById("musicContainer").innerHTML = `<iframe src="${track}" allow="autoplay; encrypted-media"></iframe>`;
 
-  },1000);
+  },1000); // overlay duration
 }
 
 /* ---------- INITIAL RUN ---------- */
